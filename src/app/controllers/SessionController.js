@@ -5,15 +5,29 @@ import authConfig from '../../config/auth';
 
 class SessionController {
   async store(req, res) {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
+
+    let user;
+    /**
+     * Verify if the user exist by e-mail
+     */
+    if (email) {
+      user = await User.findOne({ where: { email } });
+
+      if (!user) {
+        return res.status(401).json({ error: 'Usuário não existe!' });
+      }
+    }
 
     /**
-     * Verify if the user exist
+     * Verify if the user exist by username
      */
-    const user = await User.findOne({ where: { email } });
+    if (username) {
+      user = await User.findOne({ where: { username } });
 
-    if (!user) {
-      return res.status(401).json({ error: 'Usuário não existe!' });
+      if (!user) {
+        return res.status(401).json({ error: 'Usuário não existe!' });
+      }
     }
 
     /**
@@ -39,6 +53,7 @@ class SessionController {
       user: {
         id,
         name,
+        username,
         email,
         avatar: { avatar_id, url },
       },

@@ -3,14 +3,27 @@ import Mail from '../../lib/Mail';
 
 class RestoreController {
   async update(req, res) {
-    const { email } = req.body;
+    const { username, email } = req.body;
+
+    let user;
+    /**
+     * Verify if the user exist on DB by username
+     */
+    if (username) {
+      user = await User.findOne({ where: { username } });
+      if (!user) {
+        return res.status(400).json({ error: 'Usuario não existe!' });
+      }
+    }
 
     /**
-     * Verify if the user exist on DB
+     * Verify if the user exist on DB by email
      */
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.status(400).json({ error: 'Usuario não existe!' });
+    if (email) {
+      user = await User.findOne({ where: { email } });
+      if (!user) {
+        return res.status(400).json({ error: 'Usuario não existe!' });
+      }
     }
 
     /**
@@ -29,7 +42,7 @@ class RestoreController {
      * Send e-mail if new password to the user
      */
     await Mail.sendMail({
-      to: `${user.name} <${email}>`,
+      to: `${user.name} <${user.email}>`,
       subject: 'Senha redefinida',
       text: `A sua nova senha é ${random}`,
     });

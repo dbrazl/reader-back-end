@@ -14,22 +14,35 @@ class UserController {
     /**
      * Create user in DB
      */
-    const { id, name, email } = await User.create(req.body);
+    const { id, username, email } = await User.create(req.body);
 
     /**
      * Return user
      */
     return res.json({
       id,
-      name,
+      username,
       email,
     });
   }
 
   async update(req, res) {
-    const { email, oldPassword } = req.body;
+    const { username, email, oldPassword } = req.body;
 
     const user = await User.findByPk(req.userId);
+
+    /**
+     * Verify change in username and if it's available
+     */
+    if (username !== user.username) {
+      const userExist = await User.findOne({ where: { username } });
+
+      if (userExist) {
+        return res
+          .status(401)
+          .json({ error: 'O usuário informado já está sendo utilizado!' });
+      }
+    }
 
     /**
      * Verify change in user email and if it's available
@@ -59,7 +72,7 @@ class UserController {
     const { id, name, avatar_id } = await user.update(req.body);
 
     /**
-     * Find url of avatar if it files
+     * Find url of avatar if it exist
      */
     const file = await File.findOne({ where: { id: avatar_id } });
 
@@ -71,6 +84,7 @@ class UserController {
     return res.json({
       id,
       name,
+      username,
       email,
       avatar: { avatar_id, url },
     });
