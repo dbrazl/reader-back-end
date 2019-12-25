@@ -10,7 +10,7 @@ class RestoreController {
      */
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(400).json({ error: 'User does not exist' });
+      return res.status(400).json({ error: 'Usuario não existe!' });
     }
 
     /**
@@ -34,7 +34,7 @@ class RestoreController {
       text: `A sua nova senha é ${random}`,
     });
 
-    return res.json({ sucess: 'Password has been send' });
+    return res.json({ sucess: 'A senha nova senha foi enviada!' });
   }
 }
 

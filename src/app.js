@@ -3,12 +3,13 @@ import 'dotenv/config';
 import Youch from 'youch';
 import express from 'express';
 import 'express-async-errors';
+import morgan from 'morgan';
+import cors from 'cors';
+import { resolve } from 'path';
 
 import routes from './routes';
 
-// Uncomment this line to enable database access
-// --------
-// import './database';
+import './database';
 
 class App {
   constructor() {
@@ -21,6 +22,12 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    this.server.use(cors());
+    this.server.use(morgan('dev'));
+    this.server.use(
+      '/file',
+      express.static(resolve(__dirname, '..', 'tmp', 'uploads'))
+    );
   }
 
   routes() {

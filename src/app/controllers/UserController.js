@@ -38,7 +38,9 @@ class UserController {
       const userExist = await User.findOne({ where: { email } });
 
       if (userExist) {
-        return res.status(401).json({ error: 'User already exist.' });
+        return res
+          .status(401)
+          .json({ error: 'O e-mail informado já está sendo utilizado!' });
       }
     }
 
@@ -46,7 +48,9 @@ class UserController {
      * Verify if the old password is correct
      */
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
-      return res.status(401).json({ error: 'Old password is not match.' });
+      return res
+        .status(401)
+        .json({ error: 'A senha anterior está incorreta!' });
     }
 
     /**
@@ -78,7 +82,7 @@ class UserController {
     files.map(file => File.destroy({ where: { path: file.path } }));
     await User.destroy({ where: { id: req.userId } });
 
-    res.json({ sucess: 'Account has been deleted' });
+    res.json({ sucess: 'A conta foi deletada com sucesso!' });
   }
 }
 

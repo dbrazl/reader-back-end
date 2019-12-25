@@ -22,14 +22,19 @@ class AvatarController {
     ];
 
     if (!allowedMimes.includes(type)) {
-      res.status(400).json({ error: 'Invalid file type' });
+      res.status(400).json({
+        error:
+          'Tipo de arquivo inválido. O app apenas aceita arquivos no formato jpeg, pjpeg, png, gif e svg.',
+      });
     }
 
     /**
      * Verify if the size of image is less or equal 5 MB
      */
-    if (size >= 5 * 1024 * 1024) {
-      res.status(400).json({ error: 'File is to larger' });
+    if (size > 5 * 1024 * 1024) {
+      res.status(400).json({
+        error: 'Arquivo muito grande. O app aceita apenas arquivo de até 5 MB.',
+      });
     }
 
     /**
@@ -66,7 +71,7 @@ class AvatarController {
 
     await File.destroy({ where: { path } });
 
-    return res.json({ sucess: 'File has been delete' });
+    return res.json({ sucess: 'A foto de perfil foi deletada!' });
   }
 }
 
