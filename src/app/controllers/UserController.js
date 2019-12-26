@@ -27,14 +27,23 @@ class UserController {
   }
 
   async update(req, res) {
-    const { username, email, oldPassword } = req.body;
+    const { username, email, oldPassword, password } = req.body;
 
     const user = await User.findByPk(req.userId);
 
     /**
+     * If the password is provided the oldPassword need to provider too
+     */
+    if (password && !oldPassword) {
+      return res
+        .status(401)
+        .json({ error: 'A senha antiga deve ser informada!' });
+    }
+
+    /**
      * Verify change in username and if it's available
      */
-    if (username !== user.username) {
+    if (username && username !== user.username) {
       const userExist = await User.findOne({ where: { username } });
 
       if (userExist) {
@@ -47,7 +56,7 @@ class UserController {
     /**
      * Verify change in user email and if it's available
      */
-    if (email !== user.email) {
+    if (email && email !== user.email) {
       const userExist = await User.findOne({ where: { email } });
 
       if (userExist) {
@@ -84,8 +93,8 @@ class UserController {
     return res.json({
       id,
       name,
-      username,
-      email,
+      username: username || user.username,
+      email: email || user.email,
       avatar: { avatar_id, url },
     });
   }

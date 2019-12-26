@@ -9,7 +9,7 @@ export default async (req, res, next) => {
    * Verify if the token is provide
    */
   if (!authHeader) {
-    return res.status(401).json({ error: 'Token is not provide.' });
+    return res.status(401).json({ error: 'O token não foi informado.' });
   }
 
   const [, token] = authHeader.split(' ');

@@ -47,7 +47,7 @@ class RestoreController {
       text: `A sua nova senha é ${random}`,
     });
 
-    return res.json({ sucess: 'A senha nova senha foi enviada!' });
+    return res.json({ sucess: 'A nova senha foi enviada!' });
   }
 }
 

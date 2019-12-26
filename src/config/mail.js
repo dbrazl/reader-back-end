@@ -7,6 +7,6 @@ export default {
     pass: process.env.MAIL_PASS,
   },
   default: {
-    from: 'Equipe Cloud Repository <noreply@cloudrepository.com>',
+    from: 'Equipe <noreply@equipe.com>',
   },
 };

@@ -7,7 +7,7 @@ export default async (req, res, next) => {
      */
     const schema = Yup.object().shape({
       username: Yup.string(),
-      email: Yup.string().email(),
+      email: Yup.string().email('Entre com um e-mail válido!'),
     });
 
     /**

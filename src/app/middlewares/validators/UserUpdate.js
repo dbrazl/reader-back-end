@@ -8,14 +8,16 @@ export default async (req, res, next) => {
     const schema = Yup.object().shape({
       name: Yup.string(),
       username: Yup.string(),
-      email: Yup.string().email(),
-      oldPassword: Yup.string().min(6),
+      email: Yup.string().email('Entre com um e-mail válido!'),
+      oldPassword: Yup.string().min(
+        6,
+        'A senha antiga deve ter pelo menos 6 caracteres!'
+      ),
       password: Yup.string()
-        .min(6)
+        .min(6, 'A senha deve ter pelo menos 6 caracteres!')
         .when('oldPassword', (oldPassword, field) =>
-          oldPassword ? field.required() : field
+          oldPassword ? field.required('Informe a nova senha!') : field
         ),
-      avatar_id: Yup.number(),
     });
 
     /**

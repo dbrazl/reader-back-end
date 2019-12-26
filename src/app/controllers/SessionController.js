@@ -53,8 +53,8 @@ class SessionController {
       user: {
         id,
         name,
-        username,
-        email,
+        username: username || user.username,
+        email: email || user.email,
         avatar: { avatar_id, url },
       },
       token: jwt.sign({ id }, authConfig.secret, {

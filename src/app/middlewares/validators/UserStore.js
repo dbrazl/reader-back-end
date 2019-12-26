@@ -6,13 +6,13 @@ export default async (req, res, next) => {
      * Schema validation
      */
     const schema = Yup.object().shape({
-      username: Yup.string().required(),
+      username: Yup.string().required('Informe o usuário!'),
       email: Yup.string()
-        .email()
-        .required(),
+        .email('Entre com um e-mail válido!')
+        .required('Informe o e-mail!'),
       password: Yup.string()
-        .min(6)
-        .required(),
+        .min(6, 'A senha deve ter pelo menos 6 caracteres!')
+        .required('Informe a senha!'),
     });
 
     /**
